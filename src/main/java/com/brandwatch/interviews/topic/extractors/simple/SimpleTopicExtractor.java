@@ -10,6 +10,8 @@ import static com.brandwatch.interviews.topic.util.StopWordsUtil.isStopWord;
 @Component
 public class SimpleTopicExtractor implements TopicExtractor {
     public TopicResults extract(String inputText) {
+        validateText(inputText);
+
         TopicResults results = new TopicResults();
 
         String[] words = normalizeText(inputText);
@@ -23,6 +25,12 @@ public class SimpleTopicExtractor implements TopicExtractor {
         }
 
         return results;
+    }
+
+    private void validateText(String inputText) {
+        if (inputText == null || inputText.isEmpty()) {
+            throw new IllegalArgumentException("Input text cannot be null or empty");
+        }
     }
 
     private String[] normalizeText(String inputText) {
