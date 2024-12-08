@@ -2,6 +2,7 @@ package com.brandwatch.interviews.topic;
 
 import java.io.File;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,13 +17,11 @@ import com.brandwatch.interviews.topic.ascii.AsciiTitleGenerator;
 @SpringBootApplication(
         scanBasePackages = "com.brandwatch.interviews.topic"
 )
+@RequiredArgsConstructor
 public class Main implements CommandLineRunner {
 
-    @Autowired
-    private AsciiTitleGenerator titleGenerator;
-
-    @Autowired
-    private Demo demo;
+    private final AsciiTitleGenerator titleGenerator;
+    private final Demo demo;
 
     @Parameter(names = "-input", converter = FileConverter.class)
     private File file;
