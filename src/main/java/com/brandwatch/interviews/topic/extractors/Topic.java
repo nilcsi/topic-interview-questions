@@ -1,17 +1,17 @@
 package com.brandwatch.interviews.topic.extractors;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Objects;
 
+@Getter
+@Setter
+@Builder(toBuilder = true)
 public class Topic {
+
     private String label;
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
 
     @Override
     public boolean equals(Object o) {
