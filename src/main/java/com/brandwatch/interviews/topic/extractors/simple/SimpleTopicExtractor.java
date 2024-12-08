@@ -12,7 +12,7 @@ public class SimpleTopicExtractor implements TopicExtractor {
     public TopicResults extract(String inputText) {
         TopicResults results = new TopicResults();
 
-        String[] words = inputText.split(" ");
+        String[] words = normalizeText(inputText);
 
         for (String word : words) {
             if (!isStopWord(word)) {
@@ -23,5 +23,12 @@ public class SimpleTopicExtractor implements TopicExtractor {
         }
 
         return results;
+    }
+
+    private String[] normalizeText(String inputText) {
+        return inputText
+                .toLowerCase()
+                .replaceAll("[^a-zA-Z\\s]", "")
+                .split("\\s+");
     }
 }
