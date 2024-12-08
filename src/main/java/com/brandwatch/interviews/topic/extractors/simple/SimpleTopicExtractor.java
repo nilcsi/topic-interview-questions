@@ -5,6 +5,8 @@ import com.brandwatch.interviews.topic.extractors.TopicExtractor;
 import com.brandwatch.interviews.topic.extractors.TopicResults;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 import static com.brandwatch.interviews.topic.util.StopWordsUtil.isStopWord;
 
 @Component
@@ -14,15 +16,14 @@ public class SimpleTopicExtractor implements TopicExtractor {
 
         TopicResults results = new TopicResults();
 
-        String[] words = normalizeText(inputText);
+        String cleanedText = normalizeText(inputText);
 
-        for (String word : words) {
-            if (!isStopWord(word)) {
-                Topic topic = new Topic();
-                topic.setLabel(word);
-                results.addTopic(topic);
-            }
-        }
+        Arrays.stream(
+                cleanedText.split("\\s+")
+        )
+                .filter(word -> !isStopWord(word))
+                .map(this::createTopic)
+                .forEach(results::addTopic);
 
         return results;
     }
@@ -33,10 +34,15 @@ public class SimpleTopicExtractor implements TopicExtractor {
         }
     }
 
-    private String[] normalizeText(String inputText) {
+    private String normalizeText(String inputText) {
         return inputText
                 .toLowerCase()
-                .replaceAll("[^a-zA-Z\\s]", "")
-                .split("\\s+");
+                .replaceAll("[^a-zA-Z\\s]", "");
+    }
+
+    private Topic createTopic(String word) {
+        return Topic.builder()
+                .label(word)
+                .build();
     }
 }
