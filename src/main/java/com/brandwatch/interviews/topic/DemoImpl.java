@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import com.brandwatch.interviews.topic.printers.TopicResultsPrinter;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class DemoImpl implements Demo {
 
     private final TextProvider provider;
@@ -25,7 +27,8 @@ public class DemoImpl implements Demo {
             TopicResults results = extractor.extract(inputText);
             printer.print(results);
         } catch (IOException e) {
-            System.err.println("Failed");
+            log.error("Error reading file", e);
+            throw new RuntimeException(e);
         }
     }
 }
