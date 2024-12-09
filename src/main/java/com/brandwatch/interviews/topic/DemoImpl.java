@@ -19,6 +19,15 @@ public class DemoImpl implements Demo {
     private final TopicExtractor extractor;
     private final TopicResultsPrinter printer;
 
+    /**
+     * Runs the process: reads text from the provided file, extracts topics, and prints the results.
+     * The file content is read using the TextProvider, topics are extracted using the TopicExtractor,
+     * and the formatted topic results are printed using the TopicResultsPrinter.
+     *
+     * @param file the file to read from
+     * @param limit the maximum number of topics to print
+     * @throws RuntimeException if there is an error during the demo process, such as an IOException
+     */
     public void runDemo(File file, int limit) {
         try {
             String inputText = provider.readText(file);

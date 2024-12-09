@@ -13,6 +13,14 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TextProvider {
 
+    /**
+     * Reads the content of the given file and returns it as a single string.
+     * It validates the file before reading and logs the file reading process.
+     *
+     * @param file the file to read
+     * @return the content of the file as a string
+     * @throws IOException if an I/O error occurs while reading the file
+     */
     public String readText(File file) throws IOException {
         validateFile(file);
         log.info("Starting to read file {}", file.getAbsolutePath());

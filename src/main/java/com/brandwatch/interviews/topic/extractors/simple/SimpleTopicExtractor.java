@@ -18,6 +18,14 @@ public class SimpleTopicExtractor implements TopicExtractor {
     private static final String POSSESSIVE_SUFFIX_REGEX = "\\b(\\w+)'s\\b";
     private static final String SPECIFIC_CHARACTERS_REGEX = "[!@#$%^&*()_+={}\\[\\]:;\"'<>,.?/|\\\\-]";
 
+    /**
+     * Extracts topics from the given input text. It cleans and normalizes the text,
+     * splits it into words, filters out stop words, and creates topics for each word.
+     *
+     * @param inputText the text from which topics should be extracted
+     * @return TopicResults containing the extracted topics
+     * @throws IllegalArgumentException if the input text is null or empty
+     */
     public TopicResults extract(String inputText) {
         validateText(inputText);
 
