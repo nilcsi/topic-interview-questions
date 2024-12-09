@@ -4,8 +4,12 @@ import com.brandwatch.interviews.topic.extractors.TopicExtractor;
 import com.brandwatch.interviews.topic.extractors.TopicResults;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SimpleTopicExtractorTest {
 
@@ -16,18 +20,28 @@ class SimpleTopicExtractorTest {
         extractor = new SimpleTopicExtractor();
     }
 
-    @Test
-    void testAddTopic_singleTopic() {
-        TopicResults results = extractor.extract("Java is my favorite programming language");
+    @ParameterizedTest
+    @NullAndEmptySource
+    void shouldNotAddTopic_whenInputTextIsInvalid(String inputText) {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
+                () -> extractor.extract(inputText));
 
-        assertEquals(4, results.getTopics().size());
+        assertEquals("Input text cannot be null or empty", exception.getMessage());
     }
 
     @Test
-    void testAddTopic_multipleTopicsWithStopWord() {
-        TopicResults result = extractor.extract("The dog's dog is cute dog!");
+    void shouldAddTopic_withoutStopWord() {
+        TopicResults results = extractor.extract("Bright sunlight warmed grass beneath trees.");
 
-        assertEquals(2, result.getTopics().size());
+        assertEquals(6, results.getTopics().size());
+    }
+
+    @Test
+    void shouldAddTopic_withStopWord() {
+        TopicResults result = extractor.extract("The dog's dog is a cute dog!");
+
+        assertEquals(4, result.getTopics().size());
+        assertFalse(result.getTopics().stream().anyMatch(topic -> topic.getLabel().equals("dog's")));
     }
 
 }

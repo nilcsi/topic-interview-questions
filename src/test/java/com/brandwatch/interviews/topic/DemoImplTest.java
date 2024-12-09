@@ -5,6 +5,7 @@ import com.brandwatch.interviews.topic.extractors.TopicResults;
 import com.brandwatch.interviews.topic.printers.TopicResultsPrinter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -30,6 +31,7 @@ class DemoImplTest {
     @Mock
     private TopicResultsPrinter printer;
 
+    @InjectMocks
     private DemoImpl demo;
 
     @BeforeEach
@@ -39,7 +41,7 @@ class DemoImplTest {
     }
 
     @Test
-    void testRunDemo_Success() throws IOException {
+    void shouldRunDemo_success() throws IOException {
         File mockFile = mock(File.class);
         String mockInputText = "sample text";
         TopicResults mockResults = mock(TopicResults.class);
@@ -49,22 +51,22 @@ class DemoImplTest {
         when(extractor.extract(mockInputText))
                 .thenReturn(mockResults);
 
-        demo.runDemo(mockFile);
+        demo.runDemo(mockFile, 2);
 
         verify(provider, times(1)).readText(mockFile);
         verify(extractor, times(1)).extract(mockInputText);
-        verify(printer, times(1)).print(mockResults);
+        verify(printer, times(1)).print(mockResults, 2);
     }
 
     @Test
-    void testRunDemo_IOException() throws IOException {
+    void shouldRunDemo_IOException() throws IOException {
         File mockFile = mock(File.class);
         when(provider.readText(mockFile))
-                .thenThrow(new IOException("File error"));
+                .thenThrow(new IOException("Error reading file"));
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> demo.runDemo(mockFile));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> demo.runDemo(mockFile, 2));
 
-        assertEquals("java.io.IOException: File error", exception.getMessage());
+        assertEquals("java.io.IOException: Error reading file", exception.getMessage());
 
         verify(provider, times(1)).readText(mockFile);
         verifyNoInteractions(extractor);

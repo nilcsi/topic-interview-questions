@@ -16,7 +16,7 @@ class StopWordsUtilTest {
 
     @Test
     void shouldNotStopWord() {
-        boolean result = isStopWord("jaVA");
+        boolean result = isStopWord("java");
 
         assertFalse(result);
     }
