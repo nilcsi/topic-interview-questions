@@ -4,6 +4,6 @@ import java.io.File;
 
 public interface Demo {
 
-    void runDemo(File config);
+    void runDemo(File config, int limit);
 
 }

@@ -23,6 +23,9 @@ public class Main implements CommandLineRunner {
     private final AsciiTitleGenerator titleGenerator;
     private final Demo demo;
 
+    @Parameter(names = "-limit", required = true)
+    private int limit;
+
     @Parameter(names = "-input", converter = FileConverter.class)
     private File file;
 
@@ -36,6 +39,6 @@ public class Main implements CommandLineRunner {
         JCommander jcommander = JCommander.newBuilder().addObject(this).build();
         jcommander.parse(args);
         System.out.println(titleGenerator.buildTitle());
-        demo.runDemo(file);
+        demo.runDemo(file, limit);
     }
 }
